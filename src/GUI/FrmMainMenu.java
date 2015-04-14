@@ -10,6 +10,8 @@ package GUI;
  * @author adminuser
  */
 public class FrmMainMenu extends javax.swing.JFrame {
+    
+    public String userId;
 
     /**
      * Creates new form FrmMainMenu

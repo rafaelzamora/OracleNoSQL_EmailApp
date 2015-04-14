@@ -30,8 +30,14 @@ public abstract class BaseDAO {
                         hostPort));
 
             } catch (IllegalArgumentException | FaultException e) {
+                System.out
+						.println("Action: Either start a NoSQL instance at '"
+								+ hostPort
+								+ "' with store-name: '"
+								+ storeName
+								+ "' or run client by passing '<hostname:port> <storename>' at the command line.");
 
-                System.exit(1);
+                //System.exit(1);
 
             }
         } // EOF if(kvstore==null)

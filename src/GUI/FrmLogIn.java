@@ -5,17 +5,83 @@
  */
 package GUI;
 
+import DAO.UserDAO;
+import constants.Constant;
+import email.to.UserTO;
+import email.util.StringUtil;
+import static javax.swing.JOptionPane.*;
+
 /**
  *
  * @author adminuser
  */
 public class FrmLogIn extends javax.swing.JFrame {
 
+    private UserDAO userDAO = new UserDAO();
+    private FrmMainMenu frmMainMenu;
+    private FrmAccountRegister frmAccountRegister;
+    private Constant constant;
+    private UserTO userTO;
+    private String userId;
+    private char[] UserPassword;
+    private String UserEmail;
+    private int index = -1;
+
     /**
      * Creates new form FrmLogIn
      */
     public FrmLogIn() {
         initComponents();
+    }
+
+    private void GetUserCredentials() {
+        UserPassword = edtUserPassword.getPassword();
+        UserEmail = edtUserEmail.getText();
+    }
+
+    private void CheckEmail() {
+        index = UserEmail.indexOf('@');
+        // make sure @emailapp.com exist. If not then add that
+        UserEmail = index < 0 ? UserEmail + constant.EMAIL_DOMAIN : UserEmail;
+    }
+
+    //Autenthicate the user and show the Main MENU form
+    private void DoLogin() {
+        //get user email and password
+        GetUserCredentials();
+        try {
+            if (StringUtil.isNotEmpty(UserEmail) && UserPassword.length != 0) {
+                //Validate user
+                CheckEmail();
+                //Search for the user on the NoSQL DataBase
+                userTO = userDAO.getUser(UserEmail, String.valueOf(UserPassword));
+                //check if we find the user
+                if (userTO != null) {
+                    userId = userTO.getUserId();
+                    //display the MainMenu Form
+                    DisplayMainMenu();
+                } else {
+
+                    showMessageDialog(this, "Invalid User and password combination",
+                            "WARNING", WARNING_MESSAGE);
+                }
+
+            } else {
+                showMessageDialog(this, "Invalid User and password combination",
+                        "WARNING", WARNING_MESSAGE);
+            }
+        } catch (Exception e) {
+            showMessageDialog(this, "Error: " + e.getMessage(),
+                    "WARNING", ERROR_MESSAGE);
+        }
+
+    }
+
+    private void DisplayMainMenu() {
+        showMessageDialog(this, "Welcome back " + userTO.getFirst());
+        frmMainMenu = new FrmMainMenu();
+        frmMainMenu.userId = userId;
+        frmMainMenu.setVisible(true);
     }
 
     /**
@@ -28,62 +94,83 @@ public class FrmLogIn extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        edtUserEmail = new javax.swing.JTextPane();
+        edtUserPassword = new javax.swing.JPasswordField();
+        btnLogIn = new javax.swing.JButton();
+        btnRegister = new javax.swing.JButton();
+        lblTitle = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(java.awt.Color.white);
+        setResizable(false);
 
-        jScrollPane1.setViewportView(jTextPane1);
+        jScrollPane1.setViewportView(edtUserEmail);
 
-        jPasswordField1.setText("jPasswordField1");
+        btnLogIn.setText("LogIn");
+        btnLogIn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogInActionPerformed(evt);
+            }
+        });
 
-        jButton1.setText("LogIn");
+        btnRegister.setText("Register");
+        btnRegister.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegisterActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Register");
-
-        jLabel1.setText("NoSQL-Mail");
+        lblTitle.setFont(new java.awt.Font("Noto Sans", 0, 18)); // NOI18N
+        lblTitle.setText("NoSQL-Mail");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(78, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jPasswordField1)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(65, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)))
-                .addGap(98, 98, 98))
+                        .addComponent(btnLogIn, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(edtUserPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(60, 60, 60))
             .addGroup(layout.createSequentialGroup()
-                .addGap(154, 154, 154)
-                .addComponent(jLabel1)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(122, 122, 122)
+                .addComponent(lblTitle)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jLabel1)
-                .addGap(60, 60, 60)
+                .addGap(64, 64, 64)
+                .addComponent(lblTitle)
+                .addGap(26, 26, 26)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(80, Short.MAX_VALUE))
+                .addGap(12, 12, 12)
+                .addComponent(edtUserPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnLogIn)
+                    .addComponent(btnRegister))
+                .addContainerGap(83, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnLogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogInActionPerformed
+        DoLogin();
+    }//GEN-LAST:event_btnLogInActionPerformed
+
+    private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
+        frmAccountRegister = new FrmAccountRegister();
+        frmAccountRegister.userDAO = userDAO;
+        frmAccountRegister.setVisible(true);
+    }//GEN-LAST:event_btnRegisterActionPerformed
 
     /**
      * @param args the command line arguments
@@ -121,11 +208,11 @@ public class FrmLogIn extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPasswordField jPasswordField1;
+    private javax.swing.JButton btnLogIn;
+    private javax.swing.JButton btnRegister;
+    private javax.swing.JTextPane edtUserEmail;
+    private javax.swing.JPasswordField edtUserPassword;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JLabel lblTitle;
     // End of variables declaration//GEN-END:variables
 }
