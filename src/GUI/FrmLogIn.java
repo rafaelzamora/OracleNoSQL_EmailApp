@@ -70,8 +70,8 @@ public class FrmLogIn extends javax.swing.JFrame {
                 showMessageDialog(this, "Invalid User and password combination",
                         "WARNING", WARNING_MESSAGE);
             }
-        } catch (Exception e) {
-            showMessageDialog(this, "Error: " + e.getMessage(),
+        } catch (Exception ex) {
+            showMessageDialog(this, "Error: " + ex.getMessage(),
                     "WARNING", ERROR_MESSAGE);
         }
 
@@ -80,6 +80,7 @@ public class FrmLogIn extends javax.swing.JFrame {
     private void DisplayMainMenu() {
         showMessageDialog(this, "Welcome back " + userTO.getFirst());
         frmMainMenu = new FrmMainMenu();
+        frmMainMenu.userTO = userTO;
         frmMainMenu.userId = userId;
         frmMainMenu.setVisible(true);
     }

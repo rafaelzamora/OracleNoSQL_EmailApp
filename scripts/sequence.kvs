@@ -1,0 +1,8 @@
+table create -name Sequence
+add-field -name name -type String
+add-field -name current -type Long
+add-field -name increment -type Integer -default 1
+add-field -name cache -type Integer -default 50
+primary-key -field name
+exit
+plan add-table -name Sequence -wait

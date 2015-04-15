@@ -53,7 +53,6 @@ public class UserDAO extends BaseDAO {
             //create index
             getTableAPI().executeSync(emailIndex);
 
-            System.out.println("USER table  & emailIndex are created...");
         } catch (IllegalArgumentException e) {
             System.out.println("The statement is invalid: " + e);
         } catch (FaultException e) {
@@ -104,6 +103,7 @@ public class UserDAO extends BaseDAO {
                 if (StringUtil.isNotEmpty(email)) {
 
                     Date now = new Date();
+                    userTO.setEmail(email);
                     userRow.put(User.USERID, userId);
                     System.out.println(now.toString());
                     userRow.put(User.CREATEDON, now.toString());

@@ -1,0 +1,6 @@
+table create -name User.Folder.Message
+add-field -name messageId -type String
+add-field -name read -type Boolean -default false
+primary-key -field messageId
+exit
+plan add-table -name User.Folder.Message -wait

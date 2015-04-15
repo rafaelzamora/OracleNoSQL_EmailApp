@@ -77,12 +77,12 @@ public class UserFolderMessageDAO extends BaseDAO {
 
 		Version version = null;
 		Row messageRow = null;
-                System.out.println("userId: " + userId + " folderId: " + folderId + " messageId: " + messageId);
+                //System.out.println("userId: " + userId + " folderId: " + folderId + " messageId: " + messageId);
 
 		if (StringUtil.isNotEmpty(userId) && StringUtil.isNotEmpty(folderId)
 				&& StringUtil.isNotEmpty(messageId)) {
 
-			System.out.println("userId: " + userId + " folderId: " + folderId + " messageId: " + messageId);
+			//System.out.println("userId: " + userId + " folderId: " + folderId + " messageId: " + messageId);
 			
 			messageRow = this.toUserMessageRow(userId, folderId, messageId);
 

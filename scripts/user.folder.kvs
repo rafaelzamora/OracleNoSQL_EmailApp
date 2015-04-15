@@ -1,0 +1,7 @@
+table create -name User.Folder
+add-field -name folderId -type String
+add-field -name name -type String
+primary-key -field folderId
+exit
+plan add-table -name User.Folder -wait
+plan add-index -name folderIndex -table User.Folder -field userId -field name -wait

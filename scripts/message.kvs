@@ -1,0 +1,14 @@
+table create -name Message
+add-field -name MessageId -type String
+add-field -name to -type String
+add-field -name from -type String
+add-field -name cc -type String 
+add-field -name bcc -type String 
+add-field -name subject -type String
+add-field -name body -type Binary
+add-field -name attachment -type Binary 
+add-field -name createdOn -type String
+add-field -name modifiedOn -type String
+primary-key -field messageId
+exit
+plan add-table -name Message -wait

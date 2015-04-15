@@ -7,10 +7,13 @@ package GUI;
 
 import DAO.UserDAO;
 import email.to.UserTO;
+import email.util.StringUtil;
 import exceptions.DAOException;
+import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
+import static javax.swing.JOptionPane.WARNING_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 /**
@@ -33,13 +36,14 @@ public class FrmAccountRegister extends javax.swing.JFrame {
      */
     public FrmAccountRegister() {
         initComponents();
+        lblUserName.setVisible(false);
+        lblUsernameTitle.setVisible(false);
     }
 
     private void GetNewUserInfo() {
         name = edtName.getText();
         middle = edtMiddle.getText();
         last = edtLast.getText();
-        nick = edtNick.getText();
         password = String.valueOf(edtPassword.getPassword());
         age = Integer.parseInt(edtAge.getText());
     }
@@ -56,11 +60,25 @@ public class FrmAccountRegister extends javax.swing.JFrame {
         try {
             // add user
             userDAO.addUser(userTO);
+            lblUserName.setText(userTO.getEmail());
+            lblUsernameTitle.setVisible(true);
+            lblUserName.setVisible(true);
         } catch (DAOException ex) {
             showMessageDialog(this, "Error: " + ex.getMessage(),
                     "WARNING", ERROR_MESSAGE);
         }
 
+    }
+
+    public boolean IsInformationComplete() {
+        Boolean result;
+        result = true;
+        result = result && StringUtil.isNotEmpty(edtName.getText());
+        result = result && StringUtil.isNotEmpty(edtLast.getText());
+        result = result && StringUtil.isNotEmpty(edtMiddle.getText());
+        result = result && edtPassword.getPassword().length != 0;
+        result = result && StringUtil.isNotEmpty(edtAge.getText());
+        return result;
     }
 
     /**
@@ -79,14 +97,14 @@ public class FrmAccountRegister extends javax.swing.JFrame {
         edtMiddle = new javax.swing.JTextField();
         edtLast = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        edtNick = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         edtPassword = new javax.swing.JPasswordField();
         jLabel8 = new javax.swing.JLabel();
         edtAge = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        lblUsernameTitle = new javax.swing.JLabel();
+        lblUserName = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -100,11 +118,15 @@ public class FrmAccountRegister extends javax.swing.JFrame {
 
         jLabel7.setText("New Account");
 
-        jLabel4.setText("Nick");
-
         jLabel5.setText("Pass");
 
         jLabel8.setText("Age");
+
+        edtAge.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                edtAgeKeyTyped(evt);
+            }
+        });
 
         jButton1.setText("Ok");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -119,6 +141,10 @@ public class FrmAccountRegister extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
+
+        lblUsernameTitle.setText("UserName");
+
+        lblUserName.setText("email.com");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -140,26 +166,22 @@ public class FrmAccountRegister extends javax.swing.JFrame {
                                     .addComponent(edtName, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(edtMiddle, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addGap(18, 18, 18))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel5)
-                                        .addGap(18, 18, 18)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(edtPassword)
-                                    .addComponent(edtNick, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jLabel5)
+                                .addGap(18, 18, 18)
+                                .addComponent(edtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel8)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(edtAge, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
                                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(32, 32, 32)))))
+                                    .addGap(32, 32, 32))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel8)
+                                    .addGap(18, 18, 18)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(lblUsernameTitle)
+                                        .addComponent(edtAge, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
+                                        .addComponent(lblUserName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(143, 143, 143)
                         .addComponent(jLabel7)))
@@ -182,11 +204,7 @@ public class FrmAccountRegister extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(edtLast, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(edtNick, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(edtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
@@ -198,7 +216,11 @@ public class FrmAccountRegister extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(lblUsernameTitle)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblUserName)
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         pack();
@@ -209,8 +231,20 @@ public class FrmAccountRegister extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        AddNewAccount();
+        if (IsInformationComplete()) {
+            AddNewAccount();
+        } else {
+            showMessageDialog(this, "Not enough information",
+                    "WARNING", WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void edtAgeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_edtAgeKeyTyped
+        char c = evt.getKeyChar();
+        if(!(Character.isDigit(c) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))){
+            evt.consume();
+        }
+    }//GEN-LAST:event_edtAgeKeyTyped
 
     /**
      * @param args the command line arguments
@@ -252,16 +286,16 @@ public class FrmAccountRegister extends javax.swing.JFrame {
     private javax.swing.JTextField edtLast;
     private javax.swing.JTextField edtMiddle;
     private javax.swing.JTextField edtName;
-    private javax.swing.JTextField edtNick;
     private javax.swing.JPasswordField edtPassword;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel lblUserName;
+    private javax.swing.JLabel lblUsernameTitle;
     // End of variables declaration//GEN-END:variables
 }

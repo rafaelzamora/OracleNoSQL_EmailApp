@@ -1,0 +1,17 @@
+table create -name User
+add-field -name userId -type String
+add-field -name email -type String
+add-record -name name
+add-field -name first -type String
+add-field -name middle -type String
+add-field -name last -type String
+exit
+add-field -name password -type String
+add-field -name active -type Boolean  -default true
+add-field -name createdOn -type String
+add-field -name modifiedOn -type String
+add-field -name gender -type String
+primary-key -field userId
+exit
+plan add-table -name User -wait
+plan add-index -name emailSecondary -table User -field email -field password -wait
