@@ -51,6 +51,7 @@ public class FrmComposeMessage extends javax.swing.JFrame {
             // insert message to the database
             messageDAO.addMessage(messageTO);
             showMessageDialog(this, "Your message has been send!!");
+            this.dispose();
         } catch (DAOException ex) {
             showMessageDialog(this, "Error: " + ex.getMessage(),
                     "WARNING", ERROR_MESSAGE);

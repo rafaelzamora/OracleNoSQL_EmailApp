@@ -137,7 +137,7 @@ public class MessageTO implements Comparable<MessageTO>{
 	
 	@Override
 	public  int compareTo(MessageTO messageTO) {
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE MMM d HH:mm:ss zzz yyyy");
 
 	Date createDate; 
         Date createOn;

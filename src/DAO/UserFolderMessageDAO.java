@@ -123,7 +123,7 @@ public class UserFolderMessageDAO extends BaseDAO {
 	 *            - unique key of folder table
 	 * @return List of MessageTO for a user by userId and in the folder by folderId
 	 */
-	public List<MessageTO> getMessageIds(String userId, String folderName) {
+	public List<MessageTO> getMessageIds(String userId, String folderId) {
 
 		List<MessageTO> messageTOs = new ArrayList<MessageTO>();
 
@@ -135,7 +135,7 @@ public class UserFolderMessageDAO extends BaseDAO {
 		// Get User by userId
 		PrimaryKey key = messageTable.createPrimaryKey();
 		key.put(User.USERID, userId);
-		key.put(Folder.NAME, folderName);
+		key.put(Folder.FOLDERID, folderId);
 
 		messages = getTableAPI().multiGet(key, null, null);
 
