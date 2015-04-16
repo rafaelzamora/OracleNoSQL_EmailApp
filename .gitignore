@@ -16,3 +16,5 @@ core
 nbproject/*
 !nbproject/project.properties
 !nbproject/project.xml
+/build/
+/dist/

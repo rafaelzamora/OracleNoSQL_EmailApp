@@ -6,7 +6,6 @@ import oracle.kv.KVStore;
 import oracle.kv.exttab.TableFormatter;
 import oracle.kv.table.Row;
 
-//Commit de prueba de integracion
 /**
  *  This class is used to format the User table row that has 'name' as the nested field:
  *   {"first":"foo","middle":"","last":"bar"} and because of the nested
