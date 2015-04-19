@@ -1,5 +1,4 @@
 package console;
-//prueba de github
 
 import java.io.BufferedReader;
 import java.io.IOException;
